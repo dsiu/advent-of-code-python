@@ -5,10 +5,8 @@ log = logging.getLogger(__name__)
 
 
 def cal_multiplication(s: str) -> list[int]:
-    mul_pattern = re.compile(r"mul\((\d+),(\d+)\)")
-    m = mul_pattern.findall(s)
-    ret = [int(a) * int(b) for (a, b) in m]
-    return ret
+    pattern = re.compile(r"mul\((\d+),(\d+)\)")
+    return [int(a) * int(b) for (a, b) in pattern.findall(s)]
 
 
 def part1(s: str) -> int:
@@ -16,7 +14,7 @@ def part1(s: str) -> int:
 
 
 def part2(s: str) -> int:
-    return sum([sum(cal_multiplication(i.split("don't")[0])) for i in s.split("do()")])
+    return sum(sum(cal_multiplication(part.split("don't")[0])) for part in s.split("do()"))
 
 
 def parse(data: str) -> str:

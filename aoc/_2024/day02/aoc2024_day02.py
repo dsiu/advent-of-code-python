@@ -6,23 +6,10 @@ log = logging.getLogger(__name__)
 type Report = list[int]
 type Reports = list[map[int]]
 
-
-# def is_inc(diffs: Report) -> bool:
-#     return all(x > 0 for x in diffs)
-
 is_inc = lambda diffs: all(x > 0 for x in diffs)
-
-
-def is_dec(diffs: Report) -> bool:
-    return all(x < 0 for x in diffs)
-
-
-def is_diff_min_one(diffs: Report) -> bool:
-    return all(abs(x) >= 1 for x in diffs)
-
-
-def is_diff_max_three(diffs: Report) -> bool:
-    return all(abs(x) <= 3 for x in diffs)
+is_dec = lambda diffs: all(x < 0 for x in diffs)
+is_diff_min_one = lambda diffs: all(abs(x) >= 1 for x in diffs)
+is_diff_max_three = lambda diffs: all(abs(x) <= 3 for x in diffs)
 
 
 def diff(x: int, y: int) -> int:
@@ -60,13 +47,8 @@ def parse(data: str) -> Reports:
 
 
 def solve_part1(data: str) -> int:
-    reports = parse(data)
-    # print("reports", list(map(list, reports)))
-    ret = part1(reports)
-    return ret
+    return part1(parse(data))
 
 
 def solve_part2(data: str) -> int:
-    reports = parse(data)
-    ret = part2(reports)
-    return ret
+    return part2(parse(data))
