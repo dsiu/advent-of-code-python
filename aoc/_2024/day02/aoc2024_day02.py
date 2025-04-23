@@ -1,5 +1,6 @@
 import logging
-from typing import Callable
+from collections.abc import Callable
+from itertools import pairwise
 
 log = logging.getLogger(__name__)
 
@@ -17,17 +18,17 @@ def diff(x: int, y: int) -> int:
 
 
 def is_safe(report: Report) -> bool:
-    diffs = [diff(x, y) for (x, y) in zip(report[:-1], report[1:])]
+    diffs = [diff(x, y) for x, y in pairwise(report)]
 
     return (is_inc(diffs) or is_dec(diffs)) and is_diff_min_one(diffs) and is_diff_max_three(diffs)
 
 
+def remove_nth_elem(xs: Report, i: int) -> Report:
+    return xs[:i] + xs[i + 1 :]
+
+
 def is_safe_with_tolerance(report: Report) -> bool:
-    if is_safe(report):
-        return True
-    else:
-        sub_reports = [report[:i] + report[i + 1 :] for i in range(len(report))]
-        return any(is_safe(r) for r in sub_reports)
+    return is_safe(report) or any(is_safe(remove_nth_elem(report, i)) for i in range(len(report)))
 
 
 def count_cond_met(reports: Reports, cond: Callable[[Report], bool]) -> int:
